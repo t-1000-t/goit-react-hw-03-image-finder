@@ -10,27 +10,27 @@ const fullscreenbutton = [styles.fullscreenbutton];
 const button = [styles.button];
 const galleryitem = [styles.galleryitem];
 
-const PhotoCard = () => {
+const PhotoCard = ({ id, webformatURL, likes, views, comments, downloads }) => {
   return (
-    <div className={photocard}>
-      <img src="" alt="" />
+    <div key={id} className={photocard}>
+      <img src={webformatURL} alt="" />
 
       <div className={stats}>
         <p className={statsitem}>
           <i className="material-icons">thumb_up</i>
-          1108
+          {likes}
         </p>
         <p className={statsitem}>
           <i className="material-icons">visibility</i>
-          320321
+          {views}
         </p>
         <p className={statsitem}>
           <i className="material-icons">comment</i>
-          129
+          {comments}
         </p>
         <p className={statsitem}>
           <i className="material-icons">cloud_download</i>
-          176019
+          {downloads}
         </p>
       </div>
 

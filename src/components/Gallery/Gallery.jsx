@@ -5,12 +5,22 @@ import PhotoCard from '../PhotoCard/PhotoCard';
 
 const gallery = [styles.gallery];
 
-const Gallery = () => {
+const Gallery = ({ articles }) => {
   return (
     <ul className={gallery}>
-      <li>
-        <PhotoCard />
-      </li>
+      {articles.map(elem => (
+        <li>
+          <PhotoCard
+            id={elem.id}
+            webformatURL={elem.webformatURL}
+            largeImageURL={elem.largeImageURL}
+            likes={elem.likes}
+            views={elem.views}
+            comments={elem.comments}
+            downloads={elem.downloads}
+          />
+        </li>
+      ))}
     </ul>
   );
 };
