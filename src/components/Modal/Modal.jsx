@@ -5,15 +5,13 @@ import styles from './Modal.module.css';
 const modal = [styles.modal];
 const overlay = [styles.overlay];
 
-const Modal = () => {
-  return (
-    <div className={overlay}>
-      <div className={modal}>
-        <img src="" alt="" />
-      </div>
+const Modal = () => (
+  <div className={overlay}>
+    <div className={modal}>
+      <img src="" alt="" />
     </div>
-  );
-};
+  </div>
+);
 
 Modal.propTypes = {
   balance: T.string.isRequired,

@@ -8,43 +8,45 @@ const statsitem = [styles.statsitem];
 const materialicons = [styles.materialicons];
 const fullscreenbutton = [styles.fullscreenbutton];
 const button = [styles.button];
-const galleryitem = [styles.galleryitem];
+// const galleryitem = [styles.galleryitem];
 
-const PhotoCard = ({ id, webformatURL, likes, views, comments, downloads }) => {
-  return (
-    <div key={id} className={photocard}>
-      <img src={webformatURL} alt="" />
+const PhotoCard = ({ id, webformatURL, likes, views, comments, downloads }) => (
+  <div key={id} className={photocard}>
+    <img src={webformatURL} alt="" />
 
-      <div className={stats}>
-        <p className={statsitem}>
-          <i className="material-icons">thumb_up</i>
-          {likes}
-        </p>
-        <p className={statsitem}>
-          <i className="material-icons">visibility</i>
-          {views}
-        </p>
-        <p className={statsitem}>
-          <i className="material-icons">comment</i>
-          {comments}
-        </p>
-        <p className={statsitem}>
-          <i className="material-icons">cloud_download</i>
-          {downloads}
-        </p>
-      </div>
-
-      {/* <!-- Кнопка для открытия модалки с большим изображением, появляется при наведении --> */}
-      <button type="button" className={(fullscreenbutton, button)}>
-        <i className={materialicons}>zoom_out_map</i>
-      </button>
+    <div className={stats}>
+      <p className={statsitem}>
+        <i className="material-icons">thumb_up</i>
+        {likes}
+      </p>
+      <p className={statsitem}>
+        <i className="material-icons">visibility</i>
+        {views}
+      </p>
+      <p className={statsitem}>
+        <i className="material-icons">comment</i>
+        {comments}
+      </p>
+      <p className={statsitem}>
+        <i className="material-icons">cloud_download</i>
+        {downloads}
+      </p>
     </div>
-  );
-};
+
+    {/* <!-- Кнопка для открытия модалки с большим изображением, появляется при наведении --> */}
+    <button type="button" className={(fullscreenbutton, button)}>
+      <i className={materialicons}>zoom_out_map</i>
+    </button>
+  </div>
+);
 
 PhotoCard.propTypes = {
-  onChange: T.func.isRequired,
-  amount: T.number,
+  id: T.number.isRequired,
+  webformatURL: T.string.isRequired,
+  likes: T.number.isRequired,
+  views: T.number.isRequired,
+  comments: T.number.isRequired,
+  downloads: T.number.isRequired,
 };
 
 export default PhotoCard;

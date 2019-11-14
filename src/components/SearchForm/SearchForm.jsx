@@ -1,9 +1,9 @@
-import React, { Component, createRef } from 'react';
-// import { ToastContainer, toast, Zoom } from 'react-toastify';
+import React, { Component } from 'react';
 import Gallery from '../Gallery/Gallery';
-import styles from './SearchForm.module.css';
-
-const searchform = [styles.searchform];
+import articlesAPI from '../Services/ArticlesAPI';
+import ThreeDots from '../Loader/Loader';
+import ErrorNotyf from '../Services/ErrorNotyf';
+import SearchInput from '../SearchInput/SearchInput';
 
 class SearchForm extends Component {
   static defaultProps = {};
@@ -11,29 +11,38 @@ class SearchForm extends Component {
   static propTypes = {};
 
   state = {
+    isLoading: false,
     articles: [],
+    error: null,
   };
 
   componentDidMount() {
-    fetch(
-      'https://pixabay.com/api/?key=14147963-1172996dfbc4032cf6219bd1a&q=cats&image_type=photo&pretty=true',
-    )
-      .then(res => res.json())
-      .then(data => {
-        this.setState({
-          articles: data.hits,
-        });
-        // console.log(data);
-      });
+    // this.fetchArticles();
   }
 
+  fetchArticles = query => {
+    this.setState({ isLoading: true });
+    articlesAPI
+      .fetchArticles(query)
+      .then(data => {
+        this.setState({ articles: data });
+      })
+      .catch(error => {
+        this.setState({ error });
+      })
+      .finally(() => {
+        this.setState({ isLoading: false });
+      });
+  };
+
   render() {
-    const { articles } = this.state;
+    const { articles, isLoading, error } = this.state;
     return (
-      <form className={searchform}>
-        <input type="text" autoComplete="off" placeholder="Search images..." />
+      <form>
+        <SearchInput onSearch={this.fetchArticles} />
+        {error && <ErrorNotyf />}
+        {isLoading && <ThreeDots />}
         <div>{articles.length > 0 && <Gallery articles={articles} />}</div>
-        {/* <Gallery /> */}
       </form>
     );
   }
