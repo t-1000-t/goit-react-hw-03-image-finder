@@ -4,7 +4,7 @@ import styles from './Search.module.css';
 const searchform = [styles.searchform];
 
 export default class SearchInput extends Component {
-  state = { query: '' };
+  state = {};
 
   handleChange = e => {
     this.setState({
@@ -13,8 +13,11 @@ export default class SearchInput extends Component {
   };
 
   handleSubmit = e => {
+    const { query } = this.state;
+    console.log(query);
     e.preventDefault();
-    this.props.onSearch(this.state.query);
+
+    this.props.onSearch(query);
 
     this.setState({ query: '' });
   };
@@ -30,7 +33,7 @@ export default class SearchInput extends Component {
           autoComplete="off"
           placeholder="Search images..."
         />
-        <button type="submit">search</button>
+        {/* <button type="submit">search</button> */}
       </form>
     );
   }

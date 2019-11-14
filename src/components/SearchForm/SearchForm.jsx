@@ -14,18 +14,34 @@ class SearchForm extends Component {
     isLoading: false,
     articles: [],
     error: null,
+    pageNum: 1,
+    query: '',
   };
 
   componentDidMount() {
     // this.fetchArticles();
   }
 
-  fetchArticles = query => {
-    this.setState({ isLoading: true });
+  onSearch = query => {
+    console.log(query);
+    this.setState({
+      query: { query },
+      isLoading: true,
+    });
+    console.log(query);
+    this.fetchArticles();
+  };
+
+  fetchArticles = () => {
+    const { pageNum, query } = this.state;
+    console.log(query);
+    console.log(pageNum);
     articlesAPI
-      .fetchArticles(query)
+      .fetchArticles(query, pageNum)
       .then(data => {
-        this.setState({ articles: data });
+        this.setState(state => ({
+          articles: [...state.articles, ...data],
+        }));
       })
       .catch(error => {
         this.setState({ error });
@@ -38,12 +54,12 @@ class SearchForm extends Component {
   render() {
     const { articles, isLoading, error } = this.state;
     return (
-      <form>
-        <SearchInput onSearch={this.fetchArticles} />
+      <div>
+        <SearchInput onSearch={this.onSearch} />
         {error && <ErrorNotyf />}
         {isLoading && <ThreeDots />}
         <div>{articles.length > 0 && <Gallery articles={articles} />}</div>
-      </form>
+      </div>
     );
   }
 }
