@@ -1,10 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
+import T from 'prop-types';
 import styles from './Search.module.css';
 
 const searchform = [styles.searchform];
 
 export default class SearchInput extends Component {
-  state = {};
+  static propTypes = {
+    onSearch: T.func.isRequired,
+    onFetch: T.func.isRequired,
+  };
+
+  state = { query: '' };
+
+  searchRef = createRef();
 
   handleChange = e => {
     this.setState({
@@ -13,11 +21,13 @@ export default class SearchInput extends Component {
   };
 
   handleSubmit = e => {
-    const { query } = this.state;
-    console.log(query);
     e.preventDefault();
-
-    this.props.onSearch(query);
+    const { query } = this.state;
+    const { onSearch, onFetch } = this.props;
+    if (this.searchRef.current.value === '') {
+      onFetch();
+    }
+    onSearch(query);
 
     this.setState({ query: '' });
   };
@@ -27,13 +37,13 @@ export default class SearchInput extends Component {
     return (
       <form className={searchform} onSubmit={this.handleSubmit}>
         <input
+          ref={this.searchRef}
           type="text"
           onChange={this.handleChange}
           value={query}
           autoComplete="off"
           placeholder="Search images..."
         />
-        {/* <button type="submit">search</button> */}
       </form>
     );
   }

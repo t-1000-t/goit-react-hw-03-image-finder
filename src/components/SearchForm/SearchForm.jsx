@@ -4,10 +4,12 @@ import articlesAPI from '../Services/ArticlesAPI';
 import ThreeDots from '../Loader/Loader';
 import ErrorNotyf from '../Services/ErrorNotyf';
 import SearchInput from '../SearchInput/SearchInput';
+import styles from './SearchForm.module.css';
+
+const button = [styles.button];
+const btnWrap = [styles.btnWrap];
 
 class SearchForm extends Component {
-  static defaultProps = {};
-
   static propTypes = {};
 
   state = {
@@ -18,29 +20,33 @@ class SearchForm extends Component {
     query: '',
   };
 
-  componentDidMount() {
-    // this.fetchArticles();
+  componentDidUpdate(prevProps, prevState) {
+    const { query } = this.state;
+    if (prevState.query !== query) {
+      this.fetchArticles();
+    }
   }
 
   onSearch = query => {
-    console.log(query);
     this.setState({
-      query: { query },
+      query,
+      articles: [],
       isLoading: true,
+      pageNum: 1,
     });
-    console.log(query);
-    this.fetchArticles();
   };
 
   fetchArticles = () => {
+    this.setState({ isLoading: true });
+
     const { pageNum, query } = this.state;
-    console.log(query);
-    console.log(pageNum);
+
     articlesAPI
       .fetchArticles(query, pageNum)
       .then(data => {
         this.setState(state => ({
           articles: [...state.articles, ...data],
+          pageNum: state.pageNum + 1,
         }));
       })
       .catch(error => {
@@ -48,6 +54,10 @@ class SearchForm extends Component {
       })
       .finally(() => {
         this.setState({ isLoading: false });
+        window.scrollTo({
+          top: document.getElementById('root').scrollHeight,
+          behavior: 'smooth',
+        });
       });
   };
 
@@ -55,10 +65,15 @@ class SearchForm extends Component {
     const { articles, isLoading, error } = this.state;
     return (
       <div>
-        <SearchInput onSearch={this.onSearch} />
+        <SearchInput onSearch={this.onSearch} onFetch={this.fetchArticles} />
         {error && <ErrorNotyf />}
         {isLoading && <ThreeDots />}
         <div>{articles.length > 0 && <Gallery articles={articles} />}</div>
+        <div className={btnWrap}>
+          <button className={button} type="button" onClick={this.fetchArticles}>
+            Load more articles
+          </button>
+        </div>
       </div>
     );
   }

@@ -1,4 +1,5 @@
 import React from 'react';
+import T from 'prop-types';
 import styles from './Gallery.module.css';
 import PhotoCard from '../PhotoCard/PhotoCard';
 
@@ -21,5 +22,10 @@ const Gallery = ({ articles }) => (
     ))}
   </ul>
 );
+
+Gallery.propType = {
+  PhotoCard: T.string.isRequired,
+  articles: T.array.isRequired,
+};
 
 export default Gallery;
