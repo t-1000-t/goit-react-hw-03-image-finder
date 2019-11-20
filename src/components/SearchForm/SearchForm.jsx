@@ -70,9 +70,15 @@ class SearchForm extends Component {
         {isLoading && <ThreeDots />}
         <div>{articles.length > 0 && <Gallery articles={articles} />}</div>
         <div className={btnWrap}>
-          <button className={button} type="button" onClick={this.fetchArticles}>
-            Load more articles
-          </button>
+          {articles.length > 0 && (
+            <button
+              className={button}
+              type="button"
+              onClick={this.fetchArticles}
+            >
+              Load more articles
+            </button>
+          )}
         </div>
       </div>
     );
